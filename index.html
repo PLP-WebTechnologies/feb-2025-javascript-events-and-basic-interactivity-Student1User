@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    form {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 1.2rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .toggle {
+      font-size: 0.9rem;
+      color: #007bff;
+      cursor: pointer;
+      text-align: right;
+      display: block;
+      margin-top: -1rem;
+      margin-bottom: 1rem;
+    }
+
+    .strength {
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+
+    .strength.weak {
+      color: red;
+    }
+
+    .strength.medium {
+      color: orange;
+    }
+
+    .strength.strong {
+      color: green;
+    }
+
+    button {
+      width: 100%;
+      background: #007bff;
+      color: white;
+      padding: 12px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    .message {
+      margin-top: 1.5rem;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .message.success {
+      color: green;
+    }
+
+    .message.error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="signupForm">
+    <h2>Sign Up</h2>
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="email" id="email" placeholder="Email Address" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <span class="toggle" onclick="togglePassword()">Show Password</span>
+    <div id="strengthText" class="strength"></div>
+    <button type="submit">Register</button>
+    <div class="message" id="formMessage"></div>
+  </form>
+
+  <script>
+    const passwordInput = document.getElementById("password");
+    const strengthText = document.getElementById("strengthText");
+    const formMessage = document.getElementById("formMessage");
+
+    passwordInput.addEventListener("input", () => {
+      const value = passwordInput.value;
+      let strength = "weak";
+      strengthText.className = "strength weak";
+
+      if (value.length >= 8 && /[A-Z]/.test(value) && /\d/.test(value)) {
+        strength = "strong";
+        strengthText.className = "strength strong";
+      } else if (value.length >= 6) {
+        strength = "medium";
+        strengthText.className = "strength medium";
+      }
+
+      strengthText.textContent = `Password Strength: ${strength}`;
+    });
+
+    function togglePassword() {
+      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    }
+
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!name || !email || !password) {
+        formMessage.textContent = "Please fill out all fields.";
+        formMessage.className = "message error";
+        return;
+      }
+
+      formMessage.textContent = `Welcome, ${name}! You have signed up successfully.`;
+      formMessage.className = "message success";
+      this.reset();
+      strengthText.textContent = "";
+    });
+  </script>
+
+</body>
+</html>
